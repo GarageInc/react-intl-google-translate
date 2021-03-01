@@ -3,36 +3,37 @@
 const { Translate } = require("@google-cloud/translate").v2;
 const _cliProgress = require("cli-progress");
 const fs = require("fs");
-// create a new progress bar instance and use shades_classic theme
+
 const progressBar = new _cliProgress.Bar(
   {},
   _cliProgress.Presets.shades_classic
 );
 
-function addNoTranslate(sourceString) {
+const addNoTranslate = (sourceString) => {
   return sourceString
     .replace("{", '<span class="notranslate">')
     .replace("}", "</span>");
-}
+};
 
-function removeNoTranslate(sourceString) {
+const removeNoTranslate = (sourceString) => {
   return sourceString
     .replace('<span class="notranslate">', "{")
     .replace("</span>", "}");
-}
+};
 
 async function main(args) {
   const [
     sourceFile,
     targetFile,
     targetLanguageCode = "zh",
-    keyFilename = "./google-tr-api-key.json",
+    keyFilename = "./google-translate-api-key.json",
   ] = args;
 
   const targetKeyFile =
-    process.env.GOOGLE_APPLICATION_CREDENTIALS || keyFilename;
+    process.env.GOOGLE_TRANSLATION_API_CREDENTIALS || keyFilename;
+
   const translateOptions = {
-      keyFilename: targetKeyFile,
+    keyFilename: targetKeyFile,
   };
 
   // eslint-disable-next-line no-console
